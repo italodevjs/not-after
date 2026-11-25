@@ -1,4 +1,3 @@
-import './style.css';
 import { createReport, csvReport, evaluateWindow, inspectBytes, inspectText, MAX_INPUT_BYTES, mergeCertificates, type CertificateRecord } from './model';
 import { persistCertificates, restoreCertificates } from './storage';
 import { studyCoverage } from './coverage';
