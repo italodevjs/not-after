@@ -4,6 +4,8 @@ A local workbench for public X.509 certificates: inspect a bundle, compare finge
 
 It answers a small operational question: *which certificates do I have, and where do their declared validity windows leave gaps?* It does not answer whether a certificate should be trusted.
 
+![Certificate register and a real inspection record](docs/screenshots/desktop.png)
+
 ## Run
 
 Requires Node.js 22.12 or newer and npm. No accounts, API keys or database are required.
