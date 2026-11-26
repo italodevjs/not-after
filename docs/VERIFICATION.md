@@ -24,6 +24,12 @@ Real screenshots were inspected for typography, alignment, hierarchy, control de
 
 ## Limits
 
+## Public deployment
+
+The application is published at https://italodevjs.github.io/not-after/ through GitHub Pages. The same Chromium flows were repeated successfully against that public origin on 2026-11-26, including real downloads and responsive captures. GitHub Actions builds and tests before publishing; no paid backend is involved.
+
+## Remaining limits
+
 This is metadata inspection, not signature, path, hostname or revocation validation.
 
 The screenshots and automated browser flows do not establish exhaustive accessibility, every device, perceptual audio synchronization or production reliability. Tests use synthetic public certificates/geometry, the credited NASA sample and original rhythm data, without private customer inputs.

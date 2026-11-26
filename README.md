@@ -1,5 +1,7 @@
 # Not After
 
+[Open the public demonstration](https://italodevjs.github.io/not-after/) · [Verification record](docs/VERIFICATION.md)
+
 A local workbench for public X.509 certificates: inspect a bundle, compare fingerprints, freeze an evaluation time and study the continuity of declared certificate windows.
 
 It answers a small operational question: *which certificates do I have, and where do their declared validity windows leave gaps?* It does not answer whether a certificate should be trusted.
