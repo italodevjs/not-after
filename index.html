@@ -1,38 +1,155 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Inspect public X.509 certificates locally. Understand expiry, fingerprints and validity windows without uploading your files.">
-  <meta name="theme-color" content="#172d43"><link rel="icon" href="./mark.svg" type="image/svg+xml">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <link rel="stylesheet" href="/src/style.css"><title>Not After — certificate workbench</title>
-</head>
-<body>
-  <a class="skip" href="#workbench">Skip to workbench</a>
-  <header class="masthead"><a class="wordmark" href="./" aria-label="Not After home"><img src="./mark.svg" alt="" width="36" height="36">Not After<span class="wordmark-dot">.</span></a><span class="edition">PUBLIC CERTIFICATE WORKBENCH</span><a href="https://github.com/italodevjs/not-after">Source & documentation</a></header>
-  <main id="workbench">
-    <section class="intro"><div><p class="eyebrow">A DATE IS NOT A GUARANTEE.</p><h1>Know the window.<br><em>Keep the context.</em></h1></div><div class="intro-note"><p>Inspect certificates, compare fingerprints and plan renewals. Your files stay in this browser.</p><p class="small">Metadata inspection does not establish trust, check revocation or validate a hostname.</p></div></section>
-    <div class="workspace">
-      <section class="input-pane" aria-labelledby="input-heading">
-        <div class="section-head"><h2 id="input-heading">Bring a certificate</h2><span class="mono">PEM / DER</span></div>
-        <label for="pem">Paste a public certificate or PEM bundle</label>
-        <textarea id="pem" spellcheck="false" placeholder="-----BEGIN CERTIFICATE-----&#10;…&#10;-----END CERTIFICATE-----"></textarea>
-        <div class="input-actions"><button id="inspect" class="primary">Inspect certificates</button><label class="file-button" for="file">Open a file<input id="file" type="file" accept=".pem,.crt,.cer,.der" multiple></label></div>
-        <p class="small">Up to 1 MiB per input, 64 certificates per bundle. Private keys and PKCS#12 files are rejected.</p>
-        <div class="sample-line"><span>Just exploring?</span><button id="examples" class="text-button">Load example certificates</button></div>
-        <div class="evaluation"><label for="at">Evaluation time <span class="mono">UTC</span></label><input id="at" type="datetime-local" step="1"><button id="now" class="text-button">Use current time</button><p class="small">Freeze time to reproduce an expiry decision. Dates include their exact UTC boundary.</p></div>
-        <label class="save-label"><input id="persist" type="checkbox"> Remember certificates on this device</label><p id="storage-note" class="small">Off by default. Imported certificates remain in memory until this page closes.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Inspect public X.509 certificates locally. Understand expiry, fingerprints and validity windows without uploading your files."
+    />
+    <meta name="theme-color" content="#172d43" />
+    <link rel="icon" href="./mark.svg" type="image/svg+xml" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+    <title>Not After — certificate workbench</title>
+  </head>
+  <body>
+    <a class="skip" href="#workbench">Skip to workbench</a>
+    <header class="masthead">
+      <a class="wordmark" href="./" aria-label="Not After home"
+        ><img src="./mark.svg" alt="" width="36" height="36" />Not After<span
+          class="wordmark-dot"
+          >.</span
+        ></a
+      ><span class="edition">PUBLIC CERTIFICATE WORKBENCH</span
+      ><a href="https://github.com/italodevjs/not-after"
+        >Source & documentation</a
+      >
+    </header>
+    <main id="workbench">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">A DATE IS NOT A GUARANTEE.</p>
+          <h1>Know the window.<br /><em>Keep the context.</em></h1>
+        </div>
+        <div class="intro-note">
+          <p>
+            Inspect certificates, compare fingerprints and plan renewals. Your
+            files stay in this browser.
+          </p>
+          <p class="small">
+            Metadata inspection does not establish trust, check revocation or
+            validate a hostname.
+          </p>
+        </div>
       </section>
-      <section class="register" aria-labelledby="register-heading">
-        <div class="section-head"><div><h2 id="register-heading">Certificate register</h2><p id="count" class="small">No certificates loaded</p></div><label class="filter-label" for="filter">Show<select id="filter"><option value="all">All certificates</option><option value="attention">Needs attention</option><option value="expired">Expired</option><option value="future">Not yet valid</option></select></label></div>
-        <p id="message" role="status" aria-live="polite"></p>
-        <div id="entries" class="entries"></div>
-        <section id="detail" class="detail" aria-label="Selected certificate"></section>
-        <div class="export-bar"><button id="json" disabled>Export JSON report</button><button id="csv" disabled>Export CSV</button><button id="clear" disabled class="danger-text">Clear register</button></div>
+      <div class="workspace">
+        <section class="input-pane" aria-labelledby="input-heading">
+          <div class="section-head">
+            <h2 id="input-heading">Bring a certificate</h2>
+            <span class="mono">PEM / DER</span>
+          </div>
+          <label for="pem">Paste a public certificate or PEM bundle</label>
+          <textarea
+            id="pem"
+            spellcheck="false"
+            placeholder="-----BEGIN CERTIFICATE-----&#10;…&#10;-----END CERTIFICATE-----"
+          ></textarea>
+          <div class="input-actions">
+            <button id="inspect" class="primary">Inspect certificates</button
+            ><label class="file-button" for="file"
+              >Open a file<input
+                id="file"
+                type="file"
+                accept=".pem,.crt,.cer,.der"
+                multiple
+            /></label>
+          </div>
+          <p class="small">
+            Up to 1 MiB per input, 64 certificates per bundle. Private keys and
+            PKCS#12 files are rejected.
+          </p>
+          <div class="sample-line">
+            <span>Just exploring?</span
+            ><button id="examples" class="text-button">
+              Load example certificates
+            </button>
+          </div>
+          <div class="evaluation">
+            <label for="at">Evaluation time <span class="mono">UTC</span></label
+            ><input id="at" type="datetime-local" step="1" /><button
+              id="now"
+              class="text-button"
+            >
+              Use current time
+            </button>
+            <p class="small">
+              Freeze time to reproduce an expiry decision. Dates include their
+              exact UTC boundary.
+            </p>
+          </div>
+          <label class="save-label"
+            ><input id="persist" type="checkbox" /> Remember certificates on
+            this device</label
+          >
+          <p id="storage-note" class="small">
+            Off by default. Imported certificates remain in memory until this
+            page closes.
+          </p>
+          <button id="forget" class="text-button">Remove saved copy</button>
+        </section>
+        <section class="register" aria-labelledby="register-heading">
+          <div class="section-head">
+            <div>
+              <h2 id="register-heading">Certificate register</h2>
+              <p id="count" class="small">No certificates loaded</p>
+            </div>
+            <label class="filter-label" for="filter"
+              >Show<select id="filter">
+                <option value="all">All certificates</option>
+                <option value="attention">Needs attention</option>
+                <option value="expired">Expired</option>
+                <option value="future">Not yet valid</option>
+              </select></label
+            >
+          </div>
+          <p id="message" role="status" aria-live="polite"></p>
+          <div id="entries" class="entries"></div>
+          <section
+            id="detail"
+            class="detail"
+            aria-label="Selected certificate"
+          ></section>
+          <div class="export-bar">
+            <button id="json" disabled>Export JSON report</button
+            ><button id="csv" disabled>Export CSV</button
+            ><button id="clear" disabled class="danger-text">
+              Clear register
+            </button>
+          </div>
+        </section>
+      </div>
+      <section class="reading-note">
+        <h2>What you can conclude</h2>
+        <p>
+          The register reports the subject and issuer written into each
+          certificate, its SHA-256 fingerprint and whether the evaluation time
+          falls inside its declared validity window. A self-issued name or an
+          unexpired date does not make a certificate trustworthy.
+        </p>
+        <a
+          href="https://github.com/italodevjs/not-after/blob/main/docs/ARCHITECTURE.md"
+          >Read the inspection model</a
+        >
       </section>
-    </div>
-    <section class="reading-note"><h2>What you can conclude</h2><p>The register reports the subject and issuer written into each certificate, its SHA-256 fingerprint and whether the evaluation time falls inside its declared validity window. A self-issued name or an unexpired date does not make a certificate trustworthy.</p><a href="https://github.com/italodevjs/not-after/blob/main/docs/ARCHITECTURE.md">Read the inspection model</a></section>
-  </main>
-  <footer><span>Not After / An independent developer tool</span><span>No accounts. No telemetry. No certificate uploads.</span></footer>
-  <script type="module" src="/src/main.ts"></script>
-</body></html>
+    </main>
+    <footer>
+      <span>Not After / An independent developer tool</span
+      ><span>No accounts. No telemetry. No certificate uploads.</span>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
